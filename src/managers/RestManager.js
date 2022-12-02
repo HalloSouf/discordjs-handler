@@ -21,13 +21,14 @@ class RestManager {
         try {
             this.logger.info('Initializing application commands.');
 
-            if (this.client.user?.id) throw new Error('Client user was not resolved while initializing application commands.');
-            await this.DiscordRest.put(Routes.applicationCommand(this.client.user.id), {
+            if (!this.client.user?.id) throw new Error('Client user was not resolved while initializing application commands.');
+            await this.DiscordRest.put(Routes.applicationCommands(this.client.user.id), {
                 body: this.client.commands.all.map((command) => command.data.toJSON())
             });
 
             this.logger.ready(`${this.client.commands.all.size} application commands are registered!`);
         } catch (e) {
+            console.log(e);
             this.logger.error(`Error while registering slash commands: ${e}`);
         }
     }

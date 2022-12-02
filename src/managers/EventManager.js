@@ -16,7 +16,7 @@ class EventManager {
     load(dir) {
         readdirSync(dir).forEach((file) => {
             const eventInstance = require(join(dir, file));
-            const event = new eventInstance.default;
+            const event = new eventInstance;
 
             if (event.props.once) {
                 this.client.once(event.props.name, (...args) => event.execute(this.client, ...args));

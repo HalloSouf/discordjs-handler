@@ -43,11 +43,11 @@ class CommandManager {
 
             for (const file of commands) {
                 const commandInstance = require(join(dir, subDir, file));
-                const command = new commandInstance.default;
+                const command = new commandInstance;
 
                 if (command.data.name && typeof (command.data.name) === 'string' && command.data.description) {
                     if (this.commands.get(command.data.name)) return this.client.logger.error(`Two or more commands have the same name ${command.data.name}`);
-                    this.command.set(command.data.name, command);
+                    this.commands.set(command.data.name, command);
                 }
             }
         });

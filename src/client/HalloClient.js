@@ -40,7 +40,7 @@ class HalloClient extends Client {
      */
     init() {
         this.commands.load(join(__dirname, '../commands/'));
-        this.events.load();
+        this.events.load(join(__dirname, './events/'));
     }
 }
 
