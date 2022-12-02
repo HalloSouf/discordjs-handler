@@ -1,36 +1,37 @@
-const { ApplicationCommandType } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const CommandBase = require('../../utils/CommandBase');
 
-module.exports = {
-    name: 'animal',
-    description: "A test command for showing autocomplete slash command.",
-    type: ApplicationCommandType.ChatInput,
-    options: [
-        {
-            name: 'animal',
-            description: 'Choose an animal.',
-            type: 3,
-            required: true,
-            autocomplete: true
-        }
-    ],
-    autocomplete: (interaction, choices) => {
-        const data = ['dog', 'cat', 'rabbit', 'lizard', 'horse', 'hamster'];
-        data.forEach(animal => {
-            choices.push({
-                name: `${animal}`,
-                value: `${animal}`
-            });
-        });
-        interaction.respond(choices).catch(console.error);
-    },
-    run: async (client, interaction) => {
+class Animal extends CommandBase {
+    constructor() {
+        super(
+            new SlashCommandBuilder()
+                .setName('animal')
+                .setDescription('Which animal do you use?')
+                .addStringOption(input => {
+                    return input
+                        .setName('animal')
+                        .setDescription('Choose an animal.')
+                        .setRequired(true);
+                })
+        );
+    }
+
+    /**
+     * Execute commands
+     * @param {import('../../types').IHalloClient} client 
+     * @param {import('discord.js').ChatInputCommandInteraction} interaction 
+     */
+    execute(client, interaction) {
         const animal = interaction.options.get('animal').value;
         if (animal) {
-            let embed = {
-                description: `**${animal}**, I choose you!`,
-                color: client.c.main
-            }
-            return interaction.reply({ embeds: [embed] });
+            return interaction.reply({ 
+                embeds: [{
+                    description: `**${animal}**, I choose you!`,
+                    color: client.utils.colors.main 
+                }]
+            });
         }
     }
-};
+}
+
+module.exports = Animal;

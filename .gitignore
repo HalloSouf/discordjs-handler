@@ -1,3 +1,13 @@
-node_modules
-yarn.lock
+# Dependencies
+node_modules/
+
+# Production
 .env
+
+# Misc
+.vscode/
+.idea/
+.fleet/
+
+package-lock.json
+yarn.lock

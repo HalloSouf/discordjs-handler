@@ -1,15 +1,28 @@
-const { ApplicationCommandType } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const CommandBase = require('../../utils/CommandBase');
 
-module.exports = {
-    name: 'ping',
-    description: "Check the ping.",
-    type: ApplicationCommandType.ChatInput,
-    cooldown: 10000,
-    run: async (client, interaction) => {
-        let embed = {
-            description: `🏓 Latency: \`${Math.round(client.ws.ping)} ms\``,
-            color: client.c.main
-        }
-        interaction.reply({ embeds: [embed] });
+class Ping extends CommandBase {
+    constructor() {
+        super(
+            new SlashCommandBuilder()
+                .setName('ping')
+                .setDescription('Pong!')
+        );
     }
-};
+
+    /**
+     * Execute commands
+     * @param {import('../../types').IHalloClient} client 
+     * @param {import('discord.js').ChatInputCommandInteraction} interaction 
+     */
+    execute(client, interaction) {
+        interaction.reply({
+            embeds: [{
+                color: client.utils.colors.main,
+                description: `🏓 Latency: \`${Math.round(client.ws.ping)}ms\``
+            }]
+        });
+    }
+}
+
+module.exports = Ping;
